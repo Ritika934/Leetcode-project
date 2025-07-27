@@ -16,23 +16,26 @@ const streakRouter = require("./streak/streakRouter");
 const helmet = require('helmet');
 const resumeRouter = require("./Resume/ResumeRouter");
 const admin = require('firebase-admin');
+const mongoose = require('mongoose');
 
 const app = express();
-console.log(reached here,"index")
 
+// Initialize Firebase
 let firebaseInitialized = false;
-try {
-    const serviceAccount = require(process.env.GOOGLE_APPLICATION_CREDENTIALS);
-    admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount)
-    });
-    firebaseInitialized = true;
-    console.log("Firebase initialized successfully");
-} catch (error) {
-    console.error("Firebase initialization error:", error.message);
+if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
+    try {
+        const serviceAccount = require(process.env.GOOGLE_APPLICATION_CREDENTIALS);
+        admin.initializeApp({
+            credential: admin.credential.cert(serviceAccount)
+        });
+        firebaseInitialized = true;
+        console.log("Firebase initialized successfully");
+    } catch (error) {
+        console.error("Firebase initialization error:", error.message);
+    }
 }
 
-
+// Security Middleware
 app.use(helmet());
 app.use(helmet.contentSecurityPolicy({
     directives: {
@@ -46,43 +49,39 @@ app.use(helmet.contentSecurityPolicy({
     }
 }));
 
-
+// CORS Configuration
 const allowedOrigins = [
-  "https://leetcode-project-frontend.vercel.app",
-  "http://deploy-mern-1whq.vercel.app"
+    "https://leetcode-project-frontend.vercel.app",
+    "http://deploy-mern-1whq.vercel.app",
+    "http://localhost:3000" // For local development
 ];
 
 const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
-  credentials: true,
-  preflightContinue: false,
-  optionsSuccessStatus: 204
+    origin: function (origin, callback) {
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        
+        if (allowedOrigins.indexOf(origin) !== -1) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+    credentials: true,
+    optionsSuccessStatus: 200
 };
 
-
+// Apply CORS middleware
 app.use(cors(corsOptions));
 
-app.options("*", cors(corsOptions));
-app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", allowedOrigins.join(", "));
-  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-  res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.header("Access-Control-Allow-Credentials", "true");
-  next();
-});
-
+// Body Parsers
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-
+// Health Check Endpoint
 app.get('/health', (req, res) => {
     res.status(200).json({
         status: 'OK',
@@ -92,7 +91,7 @@ app.get('/health', (req, res) => {
     });
 });
 
-
+// Routes
 app.use("/user", authRouter);
 app.use("/problem", ProblemRouter);
 app.use("/submit", submitRouter);
@@ -102,23 +101,36 @@ app.use("/resume", resumeRouter);
 app.use("/api", apiRouter);
 app.use("/streak", streakRouter);
 
-
+// Error Handling Middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
-    res.status(500).json({ error: 'Something went wrong!' });
+    
+    // Handle CORS errors
+    if (err.message === 'Not allowed by CORS') {
+        return res.status(403).json({ 
+            error: 'CORS Error', 
+            message: 'Request not allowed from this origin' 
+        });
+    }
+    
+    res.status(500).json({ 
+        error: 'Internal Server Error', 
+        message: 'Something went wrong!' 
+    });
 });
 
+// Initialize Connections
 const Initializeconnection = async() => {
     try {    
         await Promise.all([main(), redisclient.connect()]);
         console.log("DB connected");
         
-        app.listen(process.env.PORT_NUMBER, () => {
-            console.log(`Listening to server on port ${process.env.PORT_NUMBER}`);
+        app.listen(process.env.PORT || 3001, () => {
+            console.log(`Server running on port ${process.env.PORT || 3001}`);
         });
     } catch(err) {
         console.log("Error: " + err.message);
-        process.exit(1); // Exit if DB connection fails
+        process.exit(1);
     }
 };
 
