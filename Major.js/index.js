@@ -18,7 +18,7 @@ const resumeRouter = require("./Resume/ResumeRouter");
 const admin = require('firebase-admin');
 
 const app = express();
-
+console.log(reached here,"index")
 
 let firebaseInitialized = false;
 try {
