@@ -24,9 +24,14 @@ admin.initializeApp({
 const app=express()
 
 app.use(cors({
-    origin:"https://my-project-frontend-three.vercel.app",
-    credentials:true
-}))
+  origin: [
+    "https://my-project-frontend-three.vercel.app",
+    "https://my-project-frontend-*.vercel.app" // Wildcard for preview deployments
+  ],
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
 
 app.use(
   helmet.contentSecurityPolicy({
