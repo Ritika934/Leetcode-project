@@ -51,8 +51,8 @@ app.use(helmet.contentSecurityPolicy({
 
 
 const allowedOrigins = [
-    "https://leetcode-project-frontend.vercel.app",
-    "http://deploy-mern-1whq.vercel.app",
+    "https://my-project-frontend-git-main-ritika-parmars-projects.vercel.app",
+    // "http://deploy-mern-1whq.vercel.app",
     "http://localhost:3000" 
 ];
 
