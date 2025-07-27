@@ -30,6 +30,18 @@ app.use(cors({
     credentials:true
 }))
 
+app.use(cors({
+    origin:["http://deploy-mern-1whq.vercel.app"],
+    methods:["POST","GET"],
+    credentials:true
+}))
+
+
+
+
+
+
+
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
