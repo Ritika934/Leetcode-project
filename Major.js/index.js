@@ -20,7 +20,7 @@ const mongoose = require('mongoose');
 
 const app = express();
 
-// Initialize Firebase
+
 let firebaseInitialized = false;
 if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
     try {
@@ -35,7 +35,7 @@ if (process.env.GOOGLE_APPLICATION_CREDENTIALS) {
     }
 }
 
-// Security Middleware
+
 app.use(helmet());
 app.use(helmet.contentSecurityPolicy({
     directives: {
@@ -49,11 +49,11 @@ app.use(helmet.contentSecurityPolicy({
     }
 }));
 
-// CORS Configuration
+
 const allowedOrigins = [
     "https://leetcode-project-frontend.vercel.app",
     "http://deploy-mern-1whq.vercel.app",
-    "http://localhost:3000" // For local development
+    "http://localhost:3000" 
 ];
 
 const corsOptions = {
@@ -73,25 +73,16 @@ const corsOptions = {
     optionsSuccessStatus: 200
 };
 
-// Apply CORS middleware
+
 app.use(cors(corsOptions));
 
-// Body Parsers
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// Health Check Endpoint
-app.get('/health', (req, res) => {
-    res.status(200).json({
-        status: 'OK',
-        database: mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected',
-        redis: redisclient.isReady ? 'Connected' : 'Disconnected',
-        firebase: firebaseInitialized ? 'Initialized' : 'Not Initialized'
-    });
-});
+app.options('*', cors(corsOptions));
 
-// Routes
 app.use("/user", authRouter);
 app.use("/problem", ProblemRouter);
 app.use("/submit", submitRouter);
@@ -101,11 +92,10 @@ app.use("/resume", resumeRouter);
 app.use("/api", apiRouter);
 app.use("/streak", streakRouter);
 
-// Error Handling Middleware
+
 app.use((err, req, res, next) => {
     console.error(err.stack);
     
-    // Handle CORS errors
     if (err.message === 'Not allowed by CORS') {
         return res.status(403).json({ 
             error: 'CORS Error', 
