@@ -52,7 +52,7 @@ app.use(helmet.contentSecurityPolicy({
 
 const allowedOrigins = [
     "https://my-project-frontend-git-main-ritika-parmars-projects.vercel.app",
-    // "http://deploy-mern-1whq.vercel.app",
+    "http://deploy-mern-1whq.vercel.app",
     "http://localhost:3000" 
 ];
 
@@ -109,14 +109,14 @@ app.use((err, req, res, next) => {
     });
 });
 
-// Initialize Connections
+
 const Initializeconnection = async() => {
     try {    
         await Promise.all([main(), redisclient.connect()]);
         console.log("DB connected");
         
-        app.listen(process.env.PORT || 3001, () => {
-            console.log(`Server running on port ${process.env.PORT || 3001}`);
+        app.listen(process.env.PORT_NUMBER || 3001, () => {
+            console.log(`Server running on port ${process.env.PORT_NUMBER || 3001}`);
         });
     } catch(err) {
         console.log("Error: " + err.message);
