@@ -20,7 +20,7 @@
       "headers": [
         {
           "key": "Access-Control-Allow-Origin",
-          "value": "https://leetcode-project-frontend.vercel.app"
+          "value": "https://my-project-frontend-three.vercel.app"
         },
         {
           "key": "Access-Control-Allow-Methods",
