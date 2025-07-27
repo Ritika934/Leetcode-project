@@ -24,7 +24,7 @@ admin.initializeApp({
 const app=express()
 
 app.use(cors({
-    origin:"https://my-project-frontend-git-main-ritika-parmars-projects.vercel.app",
+    origin:"https://my-project-frontend-three.vercel.app",
     credentials:true
 }))
 
