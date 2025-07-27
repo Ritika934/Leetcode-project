@@ -1,0 +1,44 @@
+LOGIN PAGE
+created a login page using react,daisyui and tailwind 
+Got email and password of user from frontend ,found if email exist
+if not responded with error message invalid credentials.If email is found 
+then checked the password ,for security purposes hashed the password 
+(in mongodb database) to comapre the password provided by user and one stored in database used 
+bcrypt library(bcrypt.compare) if the two passwords being same provide the jwttoken for future authentication 
+signed with emailid and role and if not provided with error message invalid credentials.
+In frontend used useform for managing the form state and zod resolver to validate form data against a Zod schema
+used redux store so that information stored can be used at different components like (isauthenticated).
+Also integated feature of login with google which uses firebase(a backened platform by google that provide basic information of user like name,email and peofile photo by OAuth which is type of google api that shares the user data)
+Also took help of google ai gemini for UI enhancements.
+SIGNUP PAGE
+on same pattern of login page made signup page.
+madde userschema so that the user can  provide only the details that I want(no shit!) created path /user/register in backend.when user wants to opt for register method other than google then,set his auth method to email-password.
+used valitor for strong password and verifying the correct email syntax.when collected all the details hashed the password using bcrypt library and stired in the backend.more the rounds of hashing more will be strong password so 
+set the rounds to be 10.Also created jwt token by signing to email and role and provided with the cookies.
+in frontend used react hook form along with zod resolver used the help of redux to get information about authentication if authenticated navigating the user to homepage.Also integrated regioster through google whre I used firebase ans OAuth.
+used daisy ui for designing.for improvement in UI took help of google ai studio.
+HOMEPAGE 
+In backend used get allproblems where I selected the field to be sent in frontend like id title difficulty tags visibletestCases startcode problemCreator.In frontend used axiosclient to fetch all the problems ans displayed them in screen .also integarted searc bar which can search the problems (used useState hook to store the value of input value )
+Also allowed user to filter the problems.For filtering provided 3 select options one for solved/unsolved problems second for difficulty levels(easy/medium/hard) and third one for tags(array/dp/graph/liked list)
+Provided with difficulty level and (solved/unsolved) value with every  problem. At top provided the user with options of logout and profile where user can check his profile.If user is admin provided him with the admin panel.
+
+Displayed image of user is avaiblable (google photourl) and if not displayed first letter of user first name 
+learned about (CSP policy content security policy) The main goal of CSP is to protect the website from attacks, 
+especially Cross-Site Scripting (XSS). XSS is when an attacker tries to inject malicious code (usually JavaScript) 
+into your website that then runs in your users' browsers. This malicious code could steal user data
+, deface your site, or do other harmful things.
+With CSP, you, as the website owner, can tell the browser:
+"Only load JavaScript code from my own website's domain."
+"Only load images from my own domain and from this specific image hosting service."
+
+PROBLEM PAGE
+In backend used problem/getproblem/id and fetched that problem.AFter fetching the problem shower its difficulty level,tags and vissible test cases in left panel.In right panel integrated monaco library that provided the code editor 
+used useref hook to store the current value written on monaco editor and showed inital code by default on code editor
+After the code completion that  is on clicking submit button the current value goes to backend the backend sends the batched submission to judge0. judge0 checks it and provides with the result.If solution is acceptable then check for all the test cases and if passed all the test cases then only show the solution is correct and is acceptable else show error with red div along with how many test cases passed out of total testcases. when the user submit the code first we store the data to our database so that can have record and set its status pending and after that solution is sent to the judge0 and changes are made in that document only (like status is changes to accepted or error)
+Then we have button for runresult that checks for visible test cases only if shows how many visible test cases are passed out of total test cases.
+We provide with 3 language options (JAVA,JAVASCRIPT,C++)
+
+
+
+
+
