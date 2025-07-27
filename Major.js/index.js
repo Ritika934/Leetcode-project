@@ -26,7 +26,7 @@ admin.initializeApp({
 const app=express()
 
 app.use(cors({
-    origin:"https://leetcode-project-frontend.vercel.app/signup",
+    origin:"https://leetcode-project-frontend.vercel.app",
     credentials:true
 }))
 
