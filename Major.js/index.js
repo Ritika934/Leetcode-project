@@ -26,7 +26,7 @@ admin.initializeApp({
 const app=express()
 
 app.use(cors({
-    origin:"http://localhost:5173",
+    origin:"https://leetcode-project-frontend.vercel.app/signup",
     credentials:true
 }))
 
