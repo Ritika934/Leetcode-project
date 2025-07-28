@@ -41,15 +41,12 @@ try {
 }
 const app=express()
 
+// Consider changing temporarily to:
 app.use(cors({
-  origin: [
-    "https://my-project-frontend-three.vercel.app",
-    "https://my-project-frontend-*.vercel.app" 
-  ],
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"]
-}));
+    origin: "*", // Allow all during initial deployment
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+}))
 
 app.use(
   helmet.contentSecurityPolicy({
