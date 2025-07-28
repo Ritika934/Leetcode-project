@@ -39,29 +39,6 @@ try {
   console.error("Failed to initialize Firebase Admin:", error);
   process.exit(1); // Exit if Firebase fails to initialize
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 const app=express()
 
 app.use(cors({
