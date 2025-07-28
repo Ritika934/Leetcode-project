@@ -43,7 +43,7 @@ const app=express()
 
 // Consider changing temporarily to:
 app.use(cors({
-    origin: "*", // Allow all during initial deployment
+    origin: "https://my-project-frontend-three.vercel.app", 
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
 }))
