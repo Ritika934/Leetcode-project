@@ -16,17 +16,58 @@ const streakRouter=require("./streak/streakRouter")
 const helmet = require('helmet');
 const resumeRouter=require("./Resume/ResumeRouter") 
 const admin = require('firebase-admin');
-const serviceAccount = require(process.env.GOOGLE_APPLICATION_CREDENTIALS);
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount)
-});
+
+const firebaseConfig = {
+  type: process.env.FIREBASE_TYPE,
+  project_id: process.env.FIREBASE_PROJECT_ID,
+  private_key_id: process.env.FIREBASE_PRIVATE_KEY_ID,
+  private_key: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'), // Handle newlines
+  client_email: process.env.FIREBASE_CLIENT_EMAIL,
+  client_id: process.env.FIREBASE_CLIENT_ID,
+  auth_uri: process.env.FIREBASE_AUTH_URI,
+  token_uri: process.env.FIREBASE_TOKEN_URI,
+  auth_provider_x509_cert_url: process.env.FIREBASE_AUTH_PROVIDER_X509_CERT_URL,
+  client_x509_cert_url: process.env.FIREBASE_CLIENT_X509_CERT_URL
+};
+
+try {
+  admin.initializeApp({
+    credential: admin.credential.cert(firebaseConfig)
+  });
+  console.log("Firebase Admin initialized successfully");
+} catch (error) {
+  console.error("Failed to initialize Firebase Admin:", error);
+  process.exit(1); // Exit if Firebase fails to initialize
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const app=express()
 
 app.use(cors({
   origin: [
     "https://my-project-frontend-three.vercel.app",
-    "https://my-project-frontend-*.vercel.app" // Wildcard for preview deployments
+    "https://my-project-frontend-*.vercel.app" 
   ],
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
@@ -40,7 +81,7 @@ app.use(
       imgSrc: ["'self'", "https://*.googleusercontent.com", "data:"], // Allow images from your domain, googleusercontent.com, and data URIs
       scriptSrc: ["'self'", "'unsafe-inline'", "https://www.gstatic.com"], // Example: allow scripts from self, unsafe-inline for React dev, gstatic for Firebase
       styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"], // Example: allow styles from self, unsafe-inline for Tailwind/DaisyUI, Google Fonts
-      // Add other directives as needed (e.g., fontSrc, connectSrc)
+     
     },
   })
 );
