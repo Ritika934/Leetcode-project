@@ -37,7 +37,7 @@ try {
   console.log("Firebase Admin initialized successfully");
 } catch (error) {
   console.error("Failed to initialize Firebase Admin:", error);
-  process.exit(1); // Exit if Firebase fails to initialize
+  process.exit(1);
 }
 const app=express()
 
