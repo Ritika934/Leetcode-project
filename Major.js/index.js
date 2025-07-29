@@ -20,7 +20,7 @@ const app=express()
 
 app.use(cors({
     origin: "https://leetcode-project-frontend-9akn.onrender.com", 
-    withCredentials: true,
+    credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"] 
 }));
