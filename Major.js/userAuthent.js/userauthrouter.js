@@ -83,7 +83,10 @@ const login=async(req,res)=>{
 
       const token=jwt.sign({emailId:databasefind.emailId,role:databasefind.role},process.env.SECRET_KEY,{expiresIn:"1d"})
      
-      res.cookie("token",token)
+      res.cookie("token",token,{ httpOnly: true,          // Recommended for security
+  secure: true,            // REQUIRED for HTTPS
+  sameSite: "none",        // CRITICAL for cross-domain cookies
+  domain: ".onrender.com"})
 
       
 
@@ -144,7 +147,10 @@ const adminregister = async(req ,res) => {
     
 
    const token = await jwt.sign({emailId:adminuser.emailId,role:adminuser.role},process.env.SECRET_KEY,{expiresIn:"1d"})
-    res.cookie("token",token)
+    res.cookie("token",token,{ httpOnly: true,          // Recommended for security
+  secure: true,            // REQUIRED for HTTPS
+  sameSite: "none",        // CRITICAL for cross-domain cookies
+  domain: ".onrender.com"})
 
 
        const reply={
