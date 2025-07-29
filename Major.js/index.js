@@ -1,4 +1,5 @@
 const express=require("express")
+const cors = require('cors');
 const cookieParser = require('cookie-parser')
 const main = require("./db"); 
 const dotenv=require('dotenv').config()
@@ -10,12 +11,19 @@ const ProblemRouter=require("./Problem.js/problemCreator")
 const submitRouter = require("./Problem.js/submit")
 const aiRouter=require("./airouter")
 const videoRouter=require("./video/videocreator");
-const cors = require('cors');
 const apiRouter = require("./userAuthent.js/googleapi");
 const streakRouter=require("./streak/streakRouter")
 const helmet = require('helmet');
 const resumeRouter=require("./Resume/ResumeRouter") 
 const admin = require('firebase-admin');
+const app=express()
+
+app.use(cors({
+    origin: "https://my-project-frontend-three.vercel.app", // Your frontend URL
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"] // Add any other headers you might use
+}));
 
 const firebaseConfig = {
   type: process.env.FIREBASE_TYPE,
@@ -39,22 +47,14 @@ try {
   console.error("Failed to initialize Firebase Admin:", error);
   process.exit(1);
 }
-const app=express()
-
-// Consider changing temporarily to:
-app.use(cors({
-    origin: "https://my-project-frontend-three.vercel.app", 
-    credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
-}))
 
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
-      defaultSrc: ["'self'"], // Allow resources from your own domain
-      imgSrc: ["'self'", "https://*.googleusercontent.com", "data:"], // Allow images from your domain, googleusercontent.com, and data URIs
-      scriptSrc: ["'self'", "'unsafe-inline'", "https://www.gstatic.com"], // Example: allow scripts from self, unsafe-inline for React dev, gstatic for Firebase
-      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"], // Example: allow styles from self, unsafe-inline for Tailwind/DaisyUI, Google Fonts
+      defaultSrc: ["'self'"], 
+      imgSrc: ["'self'", "https://*.googleusercontent.com", "data:"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "https://www.gstatic.com"], 
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"], 
      
     },
   })
