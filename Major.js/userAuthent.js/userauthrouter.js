@@ -35,7 +35,10 @@ const register = async(req,res)=>{
 // response
         const token = jwt.sign({emailId:user.emailId, role:user.role },process.env.SECRET_KEY,{expiresIn:"1d"})
 
-        res.cookie("token",token,{max_age:60*60*1000})
+        res.cookie("token",token,{max_age:60*60*1000, httpOnly: true,          // Recommended for security
+  secure: true,            // REQUIRED for HTTPS
+  sameSite: "none",        // CRITICAL for cross-domain cookies
+  domain: ".onrender.com"})
 
        const reply={
         FirstName: req.body.FirstName,
