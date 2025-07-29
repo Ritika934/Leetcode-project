@@ -32,14 +32,15 @@ const register = async(req,res)=>{
         const user = await User.create(req.body)
 
 
-// response
+
         const token = jwt.sign({emailId:user.emailId, role:user.role },process.env.SECRET_KEY,{expiresIn:"1d"})
 
-        res.cookie("token",token,{max_age:60*60*1000, httpOnly: true,          // Recommended for security
-  secure: true,            // REQUIRED for HTTPS
-  sameSite: "none",        // CRITICAL for cross-domain cookies
-  domain: ".onrender.com"})
-
+        res.cookie("token",token,{
+        httpOnly: true,         
+        secure: true,        
+        sameSite: "none"
+                                 }
+                  )
        const reply={
         FirstName: req.body.FirstName,
         emailId: req.body.emailId,
@@ -83,11 +84,12 @@ const login=async(req,res)=>{
 
       const token=jwt.sign({emailId:databasefind.emailId,role:databasefind.role},process.env.SECRET_KEY,{expiresIn:"1d"})
      
-      res.cookie("token",token,{ httpOnly: true,          // Recommended for security
-  secure: true,            // REQUIRED for HTTPS
-  sameSite: "none",        // CRITICAL for cross-domain cookies
-  domain: ".onrender.com"})
-
+        res.cookie("token",token,{
+        httpOnly: true,         
+        secure: true,        
+        sameSite: "none"
+                                 }
+                  )
       
 
       const reply={
@@ -147,10 +149,12 @@ const adminregister = async(req ,res) => {
     
 
    const token = await jwt.sign({emailId:adminuser.emailId,role:adminuser.role},process.env.SECRET_KEY,{expiresIn:"1d"})
-    res.cookie("token",token,{ httpOnly: true,          // Recommended for security
-  secure: true,            // REQUIRED for HTTPS
-  sameSite: "none",        // CRITICAL for cross-domain cookies
-  domain: ".onrender.com"})
+        res.cookie("token",token,{
+        httpOnly: true,         
+        secure: true,        
+        sameSite: "none"
+                                 }
+                  )
 
 
        const reply={
