@@ -19,10 +19,10 @@ const admin = require('firebase-admin');
 const app=express()
 
 app.use(cors({
-    origin: "https://my-project-frontend-three.vercel.app", // Your frontend URL
+    origin: "https://leetcode-project-frontend-9akn.onrender.com", 
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"] // Add any other headers you might use
+    allowedHeaders: ["Content-Type", "Authorization"] 
 }));
 
 const firebaseConfig = {
