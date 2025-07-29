@@ -32,7 +32,11 @@ const googleSignup = async(req,res)=>{
       await user.save();
 const token = jwt.sign({emailId:user.emailId,FirstName:user.FirstName, photoURL:user.photoURL},process.env.SECRET_KEY,{expiresIn:"1d"})
 
- res.cookie("token",token,{max_age:60*60*1000})
+ res.cookie("token",token,{max_age:60*60*1000, 
+                           httpOnly: true,         
+  secure: true,            
+  sameSite: "none",      
+  domain: ".onrender.com"})
 
   const reply={
         FirstName: user.FirstName,
