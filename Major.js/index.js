@@ -49,12 +49,24 @@ try {
 }
 
 app.use(
+  helmet({
+    crossOriginOpenerPolicy: { policy: "same-origin-allow-popups" },
+  })
+);
+
+
+
+
+
+app.use(
   helmet.contentSecurityPolicy({
     directives: {
       defaultSrc: ["'self'"], 
       imgSrc: ["'self'", "https://*.googleusercontent.com", "data:"],
       scriptSrc: ["'self'", "'unsafe-inline'", "https://www.gstatic.com"], 
       styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"], 
+      connectSrc: ["'self'", "https://www.googleapis.com", "https://identitytoolkit.googleapis.com"],
+     frameSrc: ["'self'", "ritika-s-coding-platform.firebaseapp.com"],
      
     },
   })
