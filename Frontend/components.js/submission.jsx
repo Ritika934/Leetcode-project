@@ -80,8 +80,8 @@ const SubmissionHistory = ({ problemId }) => {
             <h2 className="text-2xl font-bold mb-6 text-center text-base-primary">Submission History</h2>
 
             {submissions.length === 0 ? (
-                <div className="p-6 rounded-lg bg-[#1a1a1a] border border-gray-700/50 text-center">
-                    <p className="text-gray-400">No submissions found for this problem yet.</p>
+                <div className="p-6 rounded-lg bg-base-100 border border-gray-700/50 text-center">
+                    <p className="text-primary">No submissions found for this problem yet.</p>
                 </div>
             ) : (
                 <div className="bg-[#1a1a1a] rounded-lg border border-gray-700/50 overflow-hidden">
