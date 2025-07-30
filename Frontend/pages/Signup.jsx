@@ -67,7 +67,7 @@ catch (err) {
             <div className="w-full max-w-md p-8 space-y-8 bg-[#1a1a1a] rounded-lg shadow-lg border border-gray-700">
                 <div className="text-center">
 
-                    <h1 className="text-3xl font-bold text-white">YourCode</h1>
+                    <h1 className="text-3xl font-bold text-white">FangCode</h1>
                     <p className="mt-2 text-gray-400">Create your account</p>
                 </div>
 
