@@ -8,7 +8,8 @@ import { useEffect, useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react'; 
 import signInWithGoogle from "./firebaseConf"
 import axiosclient from '../axiosclient';
-import {checkAuth} from "../authslice"
+import {checkAuth} from "../authslice";
+import { getAuth, setPersistence, browserLocalPersistence } from "firebase/auth";
 
 const signupschema = z.object({
     emailId: z.string().email("Invalid Email"),
@@ -54,6 +55,8 @@ function Login() {
   
 const HandleGoogleSignin=async()=>{
     try{
+         const auth = getAuth(); 
+         await setPersistence(auth, browserLocalPersistence); 
     const result=    await signInWithGoogle();
     const user=result.user
      const response = await axiosclient.post("/api/auth/google", {
