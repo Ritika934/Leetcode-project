@@ -89,7 +89,6 @@ function Homepage() {
 
     return (
         <div className="min-h-screen bg-base-100 text-base-content font-sans">
-    <h1>Hello everyone </h1>
             <div className="bg-base-300/70 backdrop-blur-sm border-b border-base-300/50 sticky top-0 z-50 h-14">
                 <div className="container mx-auto px-4 h-full flex justify-between items-center">
                     <NavLink to="/" className="text-2xl font-bold text-primary transition-transform hover:scale-105">
