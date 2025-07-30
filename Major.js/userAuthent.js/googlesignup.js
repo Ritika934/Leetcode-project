@@ -55,10 +55,15 @@ const token = jwt.sign({emailId:user.emailId,FirstName:user.FirstName, photoURL:
  
     else {
 
-      console.log()
+      
  const token = jwt.sign({emailId:user.emailId,FirstName:user.FirstName,googleId:user.googleId,photoURL:user.photoURL},process.env.SECRET_KEY,{expiresIn:"1d"})
 
- res.cookie("token",token,{max_age:60*60*1000})
+ res.cookie("token", token, {
+        maxAge: 24 * 60 * 60 * 1000, 
+        httpOnly: true,
+        secure: true,
+        sameSite: "none"
+    });
  
        const reply={
         FirstName: user.FirstName,
