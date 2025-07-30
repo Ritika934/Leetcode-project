@@ -1,4 +1,5 @@
 LOGIN PAGE
+
 created a login page using react,daisyui and tailwind 
 Got email and password of user from frontend ,found if email exist
 if not responded with error message invalid credentials.If email is found 
@@ -10,14 +11,18 @@ In frontend used useform for managing the form state and zod resolver to validat
 used redux store so that information stored can be used at different components like (isauthenticated).
 Also integated feature of login with google which uses firebase(a backened platform by google that provide basic information of user like name,email and peofile photo by OAuth which is type of google api that shares the user data)
 Also took help of google ai gemini for UI enhancements.
+
 SIGNUP PAGE
+
 on same pattern of login page made signup page.
 madde userschema so that the user can  provide only the details that I want(no shit!) created path /user/register in backend.when user wants to opt for register method other than google then,set his auth method to email-password.
 used valitor for strong password and verifying the correct email syntax.when collected all the details hashed the password using bcrypt library and stired in the backend.more the rounds of hashing more will be strong password so 
 set the rounds to be 10.Also created jwt token by signing to email and role and provided with the cookies.
 in frontend used react hook form along with zod resolver used the help of redux to get information about authentication if authenticated navigating the user to homepage.Also integrated regioster through google whre I used firebase ans OAuth.
 used daisy ui for designing.for improvement in UI took help of google ai studio.
+
 HOMEPAGE 
+
 In backend used get allproblems where I selected the field to be sent in frontend like id title difficulty tags visibletestCases startcode problemCreator.In frontend used axiosclient to fetch all the problems ans displayed them in screen .also integarted searc bar which can search the problems (used useState hook to store the value of input value )
 Also allowed user to filter the problems.For filtering provided 3 select options one for solved/unsolved problems second for difficulty levels(easy/medium/hard) and third one for tags(array/dp/graph/liked list)
 Provided with difficulty level and (solved/unsolved) value with every  problem. At top provided the user with options of logout and profile where user can check his profile.If user is admin provided him with the admin panel.
@@ -30,15 +35,91 @@ into your website that then runs in your users' browsers. This malicious code co
 With CSP, you, as the website owner, can tell the browser:
 "Only load JavaScript code from my own website's domain."
 "Only load images from my own domain and from this specific image hosting service."
+provided Profile button for user at the homepage
 
 PROBLEM PAGE
+
 In backend used problem/getproblem/id and fetched that problem.AFter fetching the problem shower its difficulty level,tags and vissible test cases in left panel.In right panel integrated monaco library that provided the code editor 
 used useref hook to store the current value written on monaco editor and showed inital code by default on code editor
 After the code completion that  is on clicking submit button the current value goes to backend the backend sends the batched submission to judge0. judge0 checks it and provides with the result.If solution is acceptable then check for all the test cases and if passed all the test cases then only show the solution is correct and is acceptable else show error with red div along with how many test cases passed out of total testcases. when the user submit the code first we store the data to our database so that can have record and set its status pending and after that solution is sent to the judge0 and changes are made in that document only (like status is changes to accepted or error)
 Then we have button for runresult that checks for visible test cases only if shows how many visible test cases are passed out of total test cases.
 We provide with 3 language options (JAVA,JAVASCRIPT,C++)
 
+Inleft hand side we are having 4 tabs
+1.description that holds the problem title,its tag and difficulty level also it contains the description of the problem 
+at below it contains example whcih are visible testcases of that problem,
+2.Editorial section which is for user easyness.It contains video solution of problem.we stored the video at cloudinary which returns us with the metadata of video which is furthur saved in the database.Editorial section is designed to show play pause buttons and shown with the timeduration.ALso we used usecontext hook to store the current value of duration
+3.submissions  we created a submit route where peoblem submitted by user is stored .Prepared a separate submit schema for it for code cleanliness.Therefore can be useful for user to preview his old attempts.SHowed the testcaseas passed,success,memory along with the complete code submitted.
+4.Then we have chatai section whre user can take help of AI.integrated google gemini-api-key for it. gemini was given instructions to behave like a DSA instructor.It cannot answer the stuffs related to otherdomains except DSA.also instructed with the command of giving hints to the user and help the user to develop coder skills.
+API key of gemini gemini-1.5-flash was providedd by rohit negi
+In right also we have 3 tabs one for code other one for testcases for reviewing visible testcases and result for reviewing the hidden testcases
+
+UI/UX
+
+provided user with both light and dark mode for excellent user experience.Greeted user with his/her name in homepage,creating mutual sharing.
+provided Profile button for user at the homepage
+
+PROFILE PAGE
+
+when user clicks on profile page the page shows user display picture(Got from google) if not registered through google then profile shows the first letter of username.Below it created a streak feature,for better user interactivity.
+Streak breaks if there is a gap of more than 24hrs of submitting a problem (be it wrong or right) and contiues if 
+user submitted atleast one problem in 24 hr(ie in 1 day).Showed user with his solved problems(for motivation and for review and revision).Provided navigation to the problem page of that particular problem when clicked the problem.
+Then, created page called coding activity where integated calender feature of daisy ui.if user submits the problem on today's date mark the date as green otherwise leave the date grey.
 
 
+EDIT PROFILE
+
+Then integrated the edit profile feature where user can edit his/her profile or add to his existing informations.
+There exist coloumns for personal information,professional details,Resume and education.
+In personal information user can edit his name,age or gender
+in professional details he/she can add his professional credentials,his skills,current position or summary(tagline type)
+in Resume section one can add his/her resume on clicking upload resume it routes the user to the page where input arise to add raw type file (raw beacuse to add pdf,text files).When user uploads it it goes to same cloudinary account as of where the video was uploaded.cloudinary returns with the meta data which I stores in my data base like
+_id
+<!-- 68892****f2f -->
+userId
+<!-- 68892191****9cd7bb9d -->
+cloudinaryPublicId
+<!-- "resume-user/6889219******7bb9d_1753817573.pdf" -->
+secureUrl
+<!-- "https://res.cloudinary.com/dugephsol/raw/upload/v1753817576/resume-use…" -->
+createdAt
+<!-- 2025-07-29T19:32:58.374+00:00 -->
+updatedAt
+<!-- 2025-07-29T19:32:58.374+00:00 -->
+There exist this functionality also that if there exist already the resume then show the option dlete resume.Once deleted thta resume filed gets deleted form datatbase and if user want to upload the resume then again he can uplaod it .
+Achieve this functionality by findOne(resume by userid) if available show delete button.
+Then there exist the option of education section where values are stored as an array.
+User provides the degree and institute from whre the degree he/she got.
+then there exist button for update changes which successfully updates the changes by a put request receiving the formdata as json raw.
+There also exist button  of going back which lead the user back to the profile page.
 
 
+ADMIN PANEL
+
+Admin panel is designed for admins only.There exist 4 options for admin
+*For creation of problem:
+For problem creation ,one has to enter the title,description,difficulty level (easy,medium and hard) and 
+problem tag(Array,linked list,DP,Graph),
+* For testcases:Admin has to add hidden test cases as well as visible testcases
+Visible test cases are to be checked during programme run and hiddentestcases has to be checked during submission of peoblem during judge0 submission
+*Minimum 1 test cases(hidden and visible) are required to be provided by the admin
+*Code and solution has to be provided by the admin initial code and refrence solution (complete code) has to be provided by the admin.
+*Initial code and reference solution should be provided in all three languages(ie according to userschema (c++,javascript,java))
+On clicking the create problem button whole data of form data goes to backend in onject form and refrence solution is again checked judge0 and if solution is correct,then judge0 approves it and whole  problem(according to problemschema) is saved in mongodb database(POST request)
+*Then we have functionality that update the problem page.Page has problem title,difficulty and update problem button 
+which navigates the user to  update the existing problem page.The page looks identical like create problem 
+The admin changes the title,description ,tags or medium level,testcases and refrence solution.In bavckend we use PUT 
+request where the whole database of that problem id get updated.
+*Then we have functionality of delete problem,so there exist a page of delete problem where the problem title is shown that are such that navigating to the problem page,it also has difficulty level,tags and button for delete problem
+when clicked with the delete problem button it sends the delete request to the backend and delete the problem by id from database.I fetch the problem id from params 
+*Then we have functionality of video upload and delete.In this section I have merged the video upload and delete both in one page.On clicking the video upload it navigate the user to upload page(where it has a input button take can take only video files ) On clicking upload the video the page shows the progress of video upload.On completion of video upload shows details of the video(size of video,file name etc).I have adjusted the sixe of file must be less than or equal to 500MB.For cloudinary first creates the signature then creating of public id and then the cloudinary sent the metadata which gets saved to the database.
+DEsigned my website name called FANG CODE!
+A platform that takes its users and me also!! to FANG one day!!
+
+LOGOUT FEATURE
+
+Then we have a logout feature that deletes the user from from redis account deleting its cookies for lifetime.
+
+PAGINATION
+
+Integrated RATE LIMITER to the ai model that a cretain number can only be sent to the llm model in a minute 
