@@ -36,7 +36,9 @@ function Homepage() {
                 setTimeout(() => setLoading(false), 500);
             }
         };
-
+        console.log(problem[0],"problem")
+console.log(problem.tags[0],"problemtags")
+        
         const fetchSolvedProblems = async () => {
             if (user) {
                 try {
