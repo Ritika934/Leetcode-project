@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // 1. Import useNavigate
+import { useNavigate } from "react-router"; // 1. Import useNavigate
 import axiosclient from "../axiosclient";
 
 function Admindelete() {
