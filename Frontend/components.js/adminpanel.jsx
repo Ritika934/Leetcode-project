@@ -6,7 +6,7 @@ import axiosclient from "../axiosclient";
 import { useState } from "react";
 import { FileText, ListChecks, Code2, PlusCircle, Trash2, Save, AlertCircle, CheckCircle } from 'lucide-react';
 
-// Zod schema remains the same
+
 const problemSchema = z.object({
     title: z.string().min(1, "Title is required"),
     description: z.string().min(1, "Description is required"),
