@@ -43,24 +43,24 @@ const createproblem = async(req,res) => {
 
   const testresult=await submittoken(resulttoken)
 
-  for(const test of testresult){
-  console.log(`Test Token: ${test.token}, Status ID: ${test.status_id}, Status: ${test.status.description}`);
-    if(test.status_id!=3){
-     
-  console.log("Judge0 Test Failed Details:");
-        console.log("  Status ID:", test.status_id);
-        console.log("  Status Description:", test.status.description); //
-        console.log("  Stderr:", test.stderr);
-        console.log("  Stdout:", test.stdout); 
-        console.log("  Compile Output:", test.compile_output);
-        console.log("  Message:", test.message); 
-        console.log("  Time (s):", test.time);
-        console.log("  Memory (KB):", test.memory);
+ for (const [index, result] of testResults.entries()) {
+                
+                if (result.status_id !== 3) {
+                   
+                    const failedTest = submissions[index];
+                    const errorMessage = `Reference solution for ${language} failed on ${failedTest.info}.
+                        Status: ${result.status.description}.
+                        Input: ${failedTest.stdin}
+                        Expected Output: ${result.expected_output}
+                        Actual Output: ${result.stdout || 'N/A'}
+                        Error: ${result.stderr || result.compile_output || 'N/A'}`;
+                    
+                    console.error("VALIDATION FAILED:", errorMessage);
+                    return res.status(400).json({ message: errorMessage });
+                }
+            }
+        }
 
-      return res.status(400).send("Error occured")
-    }
-  }
-  }  
 
   const userProblem = await Problem.create({
     ...req.body,
