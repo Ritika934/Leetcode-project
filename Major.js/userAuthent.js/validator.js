@@ -20,10 +20,10 @@ async function validate(data){
     if(!validator.isEmail(email)){
         throw new Error("Invalid email")
     }
-    const password=data.password
-    if (! validator.isStrongPassword(password)){
-        throw new Error("Weak password")
-    }
+    // const password=data.password
+    // if (! validator.isStrongPassword(password)){
+    //     throw new Error("Weak password")
+    // }
 
    
 }
