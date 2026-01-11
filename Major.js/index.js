@@ -94,7 +94,7 @@ const Initializeconnection = async() => {
     console.log("DB connected")
 
 
-    app.listen(process.env.PORT_NUMBER,()=>{
+    app.listen(process.env.PORT,()=>{
         console.log("Listening to server ")
     })
 
