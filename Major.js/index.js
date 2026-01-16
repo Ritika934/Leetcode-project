@@ -19,7 +19,7 @@ const admin = require('firebase-admin');
 const app=express()
 
 app.use(cors({
-    // origin: "https://leetcode-project-frontend-9akn.onrender.com", 
+   
     origin: true, 
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
