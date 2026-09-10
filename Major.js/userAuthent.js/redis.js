@@ -1,12 +1,10 @@
-const redis=require ("redis");
+const { createClient } = require("redis");
 
-const redisclient = redis.createClient({
-    username: 'default',
-    password: "7SV5OE9GFpyhZDdVHYuAa4M8Df9TnIyC",
-    socket: {
-        host: 'redis-15683.c273.us-east-1-2.ec2.cloud.redislabs.com',
-        port: 15683
-    }
-});
+if (!process.env.REDIS_URL) {
+  throw new Error("REDIS_URL must be set");
+}
+
+const redisclient = createClient({ url: process.env.REDIS_URL });
+redisclient.on("error", (error) => console.error("Redis error:", error.message));
 
 module.exports = redisclient;

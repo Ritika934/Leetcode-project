@@ -180,64 +180,6 @@ export default Login;
 
 
 
-// function HandleGoogleSignIn(){
-
-   
-//    const dispatch = useDispatch()
-//     const navigate= useNavigate();
-
-
-//    const handleSignIn = async () => {
-
-//   try {
-
-// const{isAuthenticated} = useSelector((state)=>state.slice1)
-
-//     const result = await signInWithGoogle();
-
-//     const User =  result.user;
-    
-// const response = await axiosclient.post("/api/auth/google",{
-            
-//               emailId: User.email,
-//               FirstName: User.displayName,
-//               _id :User.uid
-//     })
-
-
-    
-
-//   if (response.status === 201) {
-    
-// const response = await dispatch(checkAuth())
-
-
-
-
-//       }
-  
-//   } 
-  
-//   catch (error) {
-//     console.error('Google sign-in error:', error);
-//   }
-
-//  }
-    
-// handleSignIn()
-
-//  return (
-//     <div className="flex justify-center items-center h-screen">
-//       {/* <span className="loading loading-spinner loading-lg"></span> */}
-//       <p>Signing in with Google...</p>
-//     </div>
-//   );
-
-// }
-
-// export default HandleGoogleSignIn;
-
-
 
 
 

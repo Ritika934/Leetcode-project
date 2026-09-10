@@ -1,4 +1,3 @@
-
 import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router";
@@ -197,13 +196,14 @@ console.log(problems.tags,"problemtags")
 
                 {/* --- Problem List --- */}
                 {loading ? (
-                    <div className="flex items-center justify-center h-64"><span className="loading loading-spinner loading-lg text-primary"></span></div>
+                    <div className="flex items-center justify-center h-64">
+                        <span className="loading loading-spinner loading-lg text-primary"></span></div>
                 ) : (
                     <motion.div className="space-y-3 mt-8" variants={containerVariants} initial="hidden" animate="visible">
                         <AnimatePresence>
                             {filteredProblems.length > 0 ? (
                                 filteredProblems.map(problem => (
-                                    <motion.div key={problem._id} variants={itemVariants} layout className="border-l-4 border-transparent bg-base-200 border-b border-base-300 rounded-r-lg shadow-sm hover:border-primary hover:bg-base-300/50 transition-all duration-300">
+   <motion.div key={problem._id} variants={itemVariants} layout className="border-l-4 border-transparent bg-base-200 border-b border-base-300 rounded-r-lg shadow-sm hover:border-primary hover:bg-base-300/50 transition-all duration-300">
                                         <NavLink to={`/problem/${problem._id}`} className="block p-4">
                                             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                                 <h3 className="flex-1 text-lg font-semibold text-base-content/90 transition-colors">{problem.title}</h3>

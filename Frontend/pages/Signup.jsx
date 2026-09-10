@@ -1,3 +1,4 @@
+import React from "react";
 import { useForm } from 'react-hook-form';
 import { z } from "zod";
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -149,12 +150,12 @@ catch (err) {
                     </div>
                 </div>
 
-                <div className='text-center text-sm text-gray-400'>
+                {/* <div className='text-center text-sm text-gray-400'>
                     Already have an account?{' '}
                     <NavLink to="/login" className="font-medium text-yellow-400 hover:text-yellow-500">
                         Login
                     </NavLink>
-                </div>
+                </div> */}
             </div>
         </div>
     );

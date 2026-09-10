@@ -2,11 +2,11 @@ import axios from "axios"
 
 const axiosclient = axios.create({
 
-    baseURL:'https://leetcode-project-4.onrender.com',
+    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000',
     withCredentials:true,
     headers:{
         'Content-Type':'application/json'
     }
 })
 
-export default axiosclient; 
+export default axiosclient;

@@ -20,29 +20,6 @@ export const registerUser=createAsyncThunk(
     }
 )
 
-// export const GoogleUser = createAsyncThunk(
-
-//     'slice1/GoogleUser',
-
-//     async ( userData ,{rejectWithValue}) => {
-        
-//         try{
-
-//        const response  =  await axiosClient.post('/api/auth/google', userData);
-
-//            return response.data.user 
-           
-        
-
-//         }
-
-        
-//         catch(error){
-//             return rejectWithValue(error) }
-  
-//     }
-// )
-
 
 export const LoginUser=createAsyncThunk(
     'slice1/login',
@@ -89,7 +66,7 @@ export const LogoutUser=createAsyncThunk(
     
 })
 
-// export const GoogleUser=
+
 const authslice = createSlice({
     name:'slice1',
     initialState:{

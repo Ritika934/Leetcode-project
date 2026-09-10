@@ -8,9 +8,6 @@ const User=require("../UserSchema")
 const usermiddlewear = async(req , res , next) => {
 
     try{
-
-      
-
         const {token} = req.cookies
 
         const payload = await jwt.verify(token,process.env.SECRET_KEY)

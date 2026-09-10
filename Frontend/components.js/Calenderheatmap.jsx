@@ -111,11 +111,11 @@ const CalendarHeatmap = ({ userId }) => {
     const [monthsToDisplay, setMonthsToDisplay] = useState([]);
 
     useEffect(() => {
-        // Step 1: Fetch activity data from your API
+        
         const fetchActivityData = async () => {
             setLoading(true);
             try {
-                // API should return an object like: { "2024-07-21": 2, "2024-07-22": 5 }
+                
                 const { data } = await axiosclient.get(`/user/activity/${userId}`);
                 setActivityData(data.activity || {});
             } catch (error) {

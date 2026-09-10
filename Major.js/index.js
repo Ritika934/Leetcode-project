@@ -2,11 +2,9 @@ const express=require("express")
 const cors = require('cors');
 const cookieParser = require('cookie-parser')
 const main = require("./db"); 
-const dotenv=require('dotenv').config()
-const User=require("./UserSchema")
+require('dotenv').config()
 const redisclient=require("./userAuthent.js/redis")
 const authRouter=require("./userAuthent.js/Authent");
-const authuser = require("./userAuthent.js/authuser");
 const ProblemRouter=require("./Problem.js/problemCreator")
 const submitRouter = require("./Problem.js/submit")
 const aiRouter=require("./airouter")
@@ -18,12 +16,19 @@ const resumeRouter=require("./Resume/ResumeRouter")
 const admin = require('firebase-admin');
 const app=express()
 
+const allowedOrigins = (process.env.CLIENT_ORIGIN || "http://localhost:5173")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
 app.use(cors({
-   
-    origin: true, 
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"] 
+    allowedHeaders: ["Content-Type", "Authorization"],
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+      return callback(new Error("Origin is not allowed by CORS"));
+    }
 }));
 
 const firebaseConfig = {
@@ -77,6 +82,30 @@ app.use(
 app.use(express.json())
 app.use(cookieParser())
 
+let servicesPromise;
+function initializeServices() {
+  if (!servicesPromise) {
+    servicesPromise = Promise.all([
+      main(),
+      redisclient.isOpen ? Promise.resolve() : redisclient.connect(),
+    ]).catch((error) => {
+      servicesPromise = undefined;
+      throw error;
+    });
+  }
+  return servicesPromise;
+}
+
+app.use(async (_req, _res, next) => {
+  try {
+    await initializeServices();
+    next();
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.get("/health", (_req, res) => res.status(200).json({ status: "ok" }));
 app.use("/user",authRouter);
 app.use("/problem", ProblemRouter);
 app.use("/submit", submitRouter );
@@ -86,33 +115,19 @@ app.use("/resume",resumeRouter)
 app.use("/api",apiRouter)
 app.use("/streak",streakRouter)
 
+app.use((error, _req, res, _next) => {
+  console.error(error);
+  res.status(500).json({ message: "Internal server error" });
+});
 
-const Initializeconnection = async() => {
-    try{    
-
-    await Promise.all([ main(), redisclient.connect() ])
-    
-    console.log("DB connected")
-
-
-    app.listen(process.env.PORT,()=>{
-        console.log("Listening to server ")
-    })
-
-
-    }
-    catch(err){
-        console.log("Error"+err.message)
-    }
-
-
+if (require.main === module) {
+  const port = Number(process.env.PORT || process.env.PORT_NUMBER || 3000);
+  initializeServices()
+    .then(() => app.listen(port, () => console.log(`API listening on port ${port}`)))
+    .catch((error) => {
+      console.error("Unable to start API:", error.message);
+      process.exit(1);
+    });
 }
-Initializeconnection()
 
-
-
-
-
-
-
-
+module.exports = app;

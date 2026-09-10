@@ -39,13 +39,13 @@ useEffect(() => {
   }
   return(
   <>    <Routes>
-      <Route path="/" element={isAuthenticated ?<Homepage></Homepage>:<Navigate to="/signup" />}></Route>
+      <Route path="/" element={isAuthenticated ? <Homepage /> : <Navigate to="/signup" replace />}></Route>
       <Route path="/login" element={isAuthenticated?<Navigate to="/" />:<Login></Login>}></Route>
       <Route path="/signup" element={isAuthenticated?<Navigate to="/" />:<Signup></Signup>}></Route>
       <Route path="/admin"element={isAuthenticated && user?.role === 'admin' ? <Admin /> : <Navigate to="/" />} ></Route>
     <Route path="/Admincreate"element={isAuthenticated && user?.role === 'admin' ? <Adminpanel /> :  <Navigate to="/" />} ></Route>
  <Route path="/Adminupdate"element={isAuthenticated && user?.role === 'admin' ? <Adminupdate/> : <Navigate to="/" />}> </Route>
-  <Route path="/admin/update/:problemId"element={isAuthenticated && user?.role === 'admin' ? < Problemupdate/> : <Navigate to="/" />}> </Route>
+  <Route path="/admin/update/:problemId"element= {isAuthenticated && user?.role === 'admin' ? < Problemupdate/> : <Navigate to="/" />}> </Route>
   <Route path="/Admindelete"element={isAuthenticated && user?.role === 'admin' ? <Admindelete/> : <Navigate to="/" />}> </Route>
  <Route path="/admin/video"element={isAuthenticated && user?.role === 'admin' ? <Adminvideo/> : <Navigate to="/" />}> </Route>
  <Route path="/admin/upload/:problemId"element={isAuthenticated && user?.role === 'admin' ? <Adminupload/> : <Navigate to="/" />}> </Route>

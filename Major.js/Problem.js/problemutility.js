@@ -1,103 +1,6 @@
-// const axios = require("axios")
-
-// const getLangaugeById=(lang)=>{
-//     const language={
-//         "c++":54,
-//         "java":62,
-//         "javascript":63,
-
-//      }
-//        return language[lang.toLowerCase()];
-//     }
-
-// const submitBatch = async(submissions) => {
-//   //  const encodedSubmissions = submissions.map(submission => ({
-//   //       ...submission,
-//   //       source_code: Buffer.from(submission.source_code).toString('base64')
-//   //   }));
-
-
-// const options = {
-//   method: 'POST',
-//   url: 'https://judge0-ce.p.rapidapi.com/submissions/batch',
-//   params: {
-//     base64_encoded: 'false'
-//   },
-  
-//   headers: {
-//     // 'x-rapidapi-key': '3a3d266026mshb586366240462d3p13e1f3jsnf71f9e1eedf2',
-//     'x-rapidapi-key': '15a5060426msh16d30e2b3812e73p1f6489jsn1173fa73d42c',
-//     'x-rapidapi-host': 'judge0-ce.p.rapidapi.com',
-//     'Content-Type': 'application/json'
-//   },
-//   data: {
-//     submissions
-//   }
-// };
-
-// async function fetchData() {
-// 	try {
-// 		const response = await axios.request(options);
-// 		 return response.data;
-       
-// 	} catch (error) {
-// 		console.error(error);
-// 	}
-// }
-
-// return await fetchData();
-
-// }
-
-// const waiting = (timer) => {
-//     return new Promise(resolve => setTimeout(resolve, timer));
-// }
-
-// const submittoken = async(resultoken) => {
-//   const options = {
-//   method: 'GET',
-//   url: 'https://judge0-ce.p.rapidapi.com/submissions/batch',
-//   params: {
-//     tokens: resultoken.join(","),
-//     base64_encoded: 'false',
-//     fields: '*'
-//   },
-//   headers: {
-//     // 'x-rapidapi-key': '3a3d266026mshb586366240462d3p13e1f3jsnf71f9e1eedf2',
-//     'x-rapidapi-key': '15a5060426msh16d30e2b3812e73p1f6489jsn1173fa73d42c',
-//     'x-rapidapi-host': 'judge0-ce.p.rapidapi.com'
-//   }
-// };
-
-// async function fetchData() {
-// 	try {
-// 		const response = await axios.request(options);
-// 		return response.data;
-// 	} 
-//   catch (error) {
-// 		console.error(error);
-// 	}
-// }
-// while(true){
-
-//   const result=await fetchData();
-
-
-//   const Isresultobtained=result.submissions.every((r)=>r.status_id>2)
-
-//   if(Isresultobtained){
-//     return result.submissions;
-//   }
-
-
-//   await waiting(1000)
-// }
-// }
-
-// module.exports={getLangaugeById,submitBatch,submittoken}
-
 
 const axios = require("axios");
+const judge0Url = (process.env.JUDGE0_URL || "https://ce.judge0.com").replace(/\/$/, "");
 
 const getLangaugeById = (lang) => {
     const language = {
@@ -111,18 +14,12 @@ const getLangaugeById = (lang) => {
 const submitBatch = async(submissions) => {
     const options = {
         method: 'POST',
-        url: 'https://judge0-ce.p.rapidapi.com/submissions/batch',
+        url: `${judge0Url}/submissions/batch`,
         params: {
             base64_encoded: 'false'
         },
+        timeout: 15000,
         headers: {
-            // It's generally better to use environment variables for API keys
-            // 15a5060426msh16d30e2b3812e73p1f6489jsn1173fa73d42c
-            'x-rapidapi-key': 'cd967ad053msh1060205bf58c511p11c65ajsn41f8e149e59e',
-            // cd967ad053msh1060205bf58c511p11c65ajsn41f8e149e59e',
-            // 83132b7981msh754a9987688db5ep1e4852jsn1e82551aa435
-            // a3d266026mshb586366240462d3p13e1f3jsnf71f9e1eedf2',
-            'x-rapidapi-host': 'judge0-ce.p.rapidapi.com',
             'Content-Type': 'application/json'
         },
         data: {
@@ -149,20 +46,17 @@ const waiting = (timer) => {
 const submittoken = async(resultoken) => {
     const options = {
         method: 'GET',
-        url: 'https://judge0-ce.p.rapidapi.com/submissions/batch',
+        url: `${judge0Url}/submissions/batch`,
         params: {
             tokens: resultoken.join(","),
             base64_encoded: 'false',
             fields: '*'
         },
-        headers: {
-            // It's generally better to use environment variables for API keys
-            'x-rapidapi-key': 'cd967ad053msh1060205bf58c511p11c65ajsn41f8e149e59e',
-            'x-rapidapi-host': 'judge0-ce.p.rapidapi.com'
-        }
+        timeout: 15000,
+        headers: { 'Content-Type': 'application/json' }
     };
 
-    while (true) {
+    for (let attempt = 0; attempt < 30; attempt += 1) {
         try {
             const response = await axios.request(options);
             const submissions = response.data.submissions;
@@ -181,13 +75,14 @@ const submittoken = async(resultoken) => {
                 return submissions;
             }
 
-            console.log("Waiting for Judge0 results..."); // Optional: for debugging
-            await waiting(1000); // Wait for 1 second before polling again
+            await waiting(1000);
         } catch (error) {
             console.error("Error fetching submission tokens from Judge0:", error.message || error);
             throw new Error("Failed to retrieve submission results from Judge0.");
         }
     }
+
+    throw new Error("Judge0 timed out while executing the submission.");
 };
 
 module.exports = { getLangaugeById, submitBatch, submittoken };

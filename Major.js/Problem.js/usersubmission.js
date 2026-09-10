@@ -70,12 +70,12 @@ const submitCode = async (req , res) => {
             if(test.status_id==4){
               runtime = runtime + parseFloat(test.time)
               memory = Math.max(memory , test.memory)
-               test.status="wrong"
+               status="wrong"
                errormessage=test.stderr}
     
 
             else{
-                test.status = "error"
+                status = "error"
                 runtime = runtime + parseFloat(test.time)
                 memory = Math.max(memory , test.memory)
                 errormessage=test.stderr 
@@ -102,7 +102,7 @@ try{
     // submitted result ki probelmid if exist nhi krti hi solved probelms mein then problem d  ko push krdena solvedproblems sxhema
     // of userschema
 
-   if(! req.userfind.problemSolved.includes(problemId)){
+   if(status === "accepted" && !req.userfind.problemSolved.includes(problemId)){
     req.userfind.problemSolved.push(problemId)
     req.userfind.save()
    }
@@ -182,14 +182,14 @@ const totalTestCases=problem.visibletestCases.length
      
     else{
             if(test.status_id==4){
-               test.status="error"
-               test.stderr=errormessage
+               status="wrong"
+               errormessage=test.stderr
 
               }
 
             else{
-              test.status="error"
-              test.stderr=errormessage
+              status="error"
+              errormessage=test.stderr
               }
           }
         }
@@ -200,7 +200,8 @@ res.status(201).json({
   success:status,
   testcases:testresult,
  totalTestCases:totalTestCases,
- testcasesPassed:testcasesPassed
+ testcasesPassed:testcasesPassed,
+ errormessage
 })
       
      

@@ -54,7 +54,8 @@ const saveresumemetadata =async(req,res)=>{
         
        
        const cloudinaryResource = await cloudinary.api.resource(cloudinaryPublicId,{resource_type:"raw"});
-     if(!cloudinaryResource){
+     
+       if(!cloudinaryResource){
         return res.status(400).json({error:"Resume not found on cloudinary"});
      }
 

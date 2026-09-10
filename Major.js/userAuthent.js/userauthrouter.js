@@ -7,6 +7,7 @@ const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
 const redisclient = require("./redis");
+const { cookieOptions } = require("./cookieOptions");
 
 
 const app=express()
@@ -24,7 +25,7 @@ const register = async(req,res)=>{
       validate(req.body)
      
         req.body.password = await bcrypt.hash(req.body.password,10)
-  
+
        
         req.body.role="user"
 
@@ -35,12 +36,7 @@ const register = async(req,res)=>{
 
         const token = jwt.sign({emailId:user.emailId, role:user.role },process.env.SECRET_KEY,{expiresIn:"1d"})
 
-        res.cookie("token",token,{
-        httpOnly: true,         
-        secure: true,        
-        sameSite: "none"
-                                 }
-                  )
+        res.cookie("token", token, { ...cookieOptions, maxAge: 60 * 60 * 1000 })
        const reply={
         FirstName: req.body.FirstName,
         emailId: req.body.emailId,
@@ -84,12 +80,7 @@ const login=async(req,res)=>{
 
       const token=jwt.sign({emailId:databasefind.emailId,role:databasefind.role},process.env.SECRET_KEY,{expiresIn:"1d"})
      
-        res.cookie("token",token,{
-        httpOnly: true,         
-        secure: true,        
-        sameSite: "none"
-                                 }
-                  )
+      res.cookie("token", token, cookieOptions)
       
 
       const reply={
@@ -125,7 +116,7 @@ const logout=async(req,res)=>{
 
      await redisclient.expireAt(`token:${token}`,payload.exp)
 
-     res.cookie("token",null,{expires:new Date(Date.now())})
+     res.clearCookie("token", cookieOptions)
 
      res.send("logged out successfully")
 
@@ -149,12 +140,7 @@ const adminregister = async(req ,res) => {
     
 
    const token = await jwt.sign({emailId:adminuser.emailId,role:adminuser.role},process.env.SECRET_KEY,{expiresIn:"1d"})
-        res.cookie("token",token,{
-        httpOnly: true,         
-        secure: true,        
-        sameSite: "none"
-                                 }
-                  )
+    res.cookie("token", token, cookieOptions)
 
 
        const reply={

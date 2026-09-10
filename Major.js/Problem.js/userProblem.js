@@ -43,23 +43,14 @@ const createproblem = async(req,res) => {
 
   const testresult=await submittoken(resulttoken)
 
- for (const [index, result] of testResults.entries()) {
-                
-                if (result.status_id !== 3) {
-                   
-                    const failedTest = submissions[index];
-                    const errorMessage = `Reference solution for ${language} failed on ${failedTest.info}.
-                        Status: ${result.status.description}.
-                        Input: ${failedTest.stdin}
-                        Expected Output: ${result.expected_output}
-                        Actual Output: ${result.stdout || 'N/A'}
-                        Error: ${result.stderr || result.compile_output || 'N/A'}`;
-                    
-                    console.error("VALIDATION FAILED:", errorMessage);
-                    return res.status(400).json({ message: errorMessage });
-                }
-            }
-        }
+  for (const [index, result] of testresult.entries()) {
+    if (result.status_id !== 3) {
+      const failedTest = submissions[index];
+      const errorMessage = `Reference solution for ${language} failed on ${failedTest.info}. Status: ${result.status.description}. Input: ${failedTest.stdin} Expected Output: ${result.expected_output} Actual Output: ${result.stdout || "N/A"} Error: ${result.stderr || result.compile_output || "N/A"}`;
+      console.error("VALIDATION FAILED:", errorMessage);
+      return res.status(400).json({ message: errorMessage });
+    }
+  }
 
 
   const userProblem = await Problem.create({

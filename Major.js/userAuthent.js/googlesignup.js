@@ -2,6 +2,7 @@ const express=require("express")
 const User=require("../UserSchema")
 const jwt = require('jsonwebtoken');
 const cookieParser = require('cookie-parser');
+const { cookieOptions } = require("./cookieOptions");
 
 const app=express()
 
@@ -10,7 +11,6 @@ app.use(express.json())
 app.use(cookieParser())
 
 const googleSignup = async(req,res)=>{
-
   try {
     const {FirstName,emailId ,_id ,photoURL} = req.body;
     
@@ -32,11 +32,7 @@ const googleSignup = async(req,res)=>{
       await user.save();
 const token = jwt.sign({emailId:user.emailId,FirstName:user.FirstName, photoURL:user.photoURL},process.env.SECRET_KEY,{expiresIn:"1d"})
 
- res.cookie("token",token,{max_age:60*60*1000, 
-                           httpOnly: true,         
-  secure: true,            
-  sameSite: "none",      
-  domain: ".onrender.com"})
+ res.cookie("token", token, { ...cookieOptions, maxAge: 60 * 60 * 1000 })
 
   const reply={
         FirstName: user.FirstName,
@@ -58,12 +54,7 @@ const token = jwt.sign({emailId:user.emailId,FirstName:user.FirstName, photoURL:
       
  const token = jwt.sign({emailId:user.emailId,FirstName:user.FirstName,googleId:user.googleId,photoURL:user.photoURL},process.env.SECRET_KEY,{expiresIn:"1d"})
 
- res.cookie("token", token, {
-        maxAge: 24 * 60 * 60 * 1000, 
-        httpOnly: true,
-        secure: true,
-        sameSite: "none"
-    });
+ res.cookie("token", token, { ...cookieOptions, maxAge: 60 * 60 * 1000 })
  
        const reply={
         FirstName: user.FirstName,
